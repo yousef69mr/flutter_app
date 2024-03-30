@@ -1,50 +1,5 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.buildlog/
-.history
-.svn/
-migrate_working_dir/
-
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
-
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
-.dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
-
-# Symbolication related
-app.*.symbols
-
-# Obfuscation related
-app.*.map.json
-
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
-
-
-# Created by https://www.toptal.com/developers/gitignore/api/windows,android,visualstudiocode,androidstudio,xcode,flutter,dart,dotenv,venv
-# Edit at https://www.toptal.com/developers/gitignore?templates=windows,android,visualstudiocode,androidstudio,xcode,flutter,dart,dotenv,venv
+# Created by https://www.toptal.com/developers/gitignore/api/windows,flutter,visualstudiocode,dart,dotenv,android,androidstudio
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows,flutter,visualstudiocode,dart,dotenv,android,androidstudio
 
 ### Android ###
 # Gradle files
@@ -54,6 +9,9 @@ build/
 # Local configuration file (sdk path, etc)
 local.properties
 
+# Log/OS Files
+*.log
+
 # Android Studio generated files and folders
 captures/
 .externalNativeBuild/
@@ -62,6 +20,8 @@ captures/
 output.json
 
 # IntelliJ
+*.iml
+.idea/
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
@@ -86,6 +46,7 @@ gen-external-apklibs
 # See https://www.dartlang.org/guides/libraries/private-files
 
 # Files and directories created by pub
+.dart_tool/
 .packages
 # If you're building an application, you may want to check-in your pubspec.lock
 pubspec.lock
@@ -106,6 +67,8 @@ doc/api/
 *.js.deps
 *.js.map
 
+.flutter-plugins
+.flutter-plugins-dependencies
 
 ### Dart Patch ###
 # dotenv environment variables file
@@ -115,8 +78,10 @@ doc/api/
 
 ### Flutter ###
 # Flutter/Dart/Pub related
+**/doc/api/
 .fvm/flutter_sdk
-
+.pub-cache/
+.pub/
 coverage/
 lib/generated_plugin_registrant.dart
 # For library packages, don’t commit the pubspec.lock file.
@@ -151,6 +116,7 @@ lib/generated_plugin_registrant.dart
 **/ios/**/profile
 **/ios/**/xcuserdata
 **/ios/.generated/
+**/ios/Flutter/.last_build_id
 **/ios/Flutter/App.framework
 **/ios/Flutter/Flutter.framework
 **/ios/Flutter/Flutter.podspec
@@ -169,20 +135,6 @@ lib/generated_plugin_registrant.dart
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
-### venv ###
-# Virtualenv
-# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
-.Python
-[Bb]in
-[Ii]nclude
-[Ll]ib
-[Ll]ib64
-[Ll]ocal
-[Ss]cripts
-pyvenv.cfg
-.venv
-pip-selfcheck.json
-
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -199,6 +151,7 @@ pip-selfcheck.json
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
+.history
 .ionide
 
 ### Windows ###
@@ -227,23 +180,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-### Xcode ###
-## User settings
-xcuserdata/
-
-## Xcode 8 and earlier
-*.xcscmblueprint
-*.xccheckout
-
-### Xcode Patch ###
-*.xcodeproj/*
-!*.xcodeproj/project.pbxproj
-!*.xcodeproj/xcshareddata/
-!*.xcodeproj/project.xcworkspace/
-!*.xcworkspace/contents.xcworkspacedata
-/*.gcno
-**/xcshareddata/WorkspaceSettings.xcsettings
-
 ### AndroidStudio ###
 # Covers files to be ignored for android development using Android Studio.
 
@@ -253,6 +189,9 @@ xcuserdata/
 
 # Files for the ART/Dalvik VM
 *.dex
+
+# Java class files
+*.class
 
 # Generated files
 bin/
@@ -279,8 +218,9 @@ proguard/
 /*/*/build
 /*/*/production
 .navigation/
+*.ipr
 *~
-
+*.swp
 
 # Keystore files
 
@@ -296,6 +236,7 @@ proguard/
 obj/
 
 # IntelliJ IDEA
+*.iws
 /out/
 
 # User-specific configurations
@@ -361,6 +302,4 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
-# End of https://www.toptal.com/developers/gitignore/api/windows,android,visualstudiocode,androidstudio,xcode,flutter,dart,dotenv,venv
-
-
+# End of https://www.toptal.com/developers/gitignore/api/windows,flutter,visualstudiocode,dart,dotenv,android,androidstudio
