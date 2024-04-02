@@ -3,6 +3,7 @@ import 'package:flutter_application_1/utilities/validations/forms/inputs/email_i
 import 'package:flutter_application_1/utilities/validations/forms/inputs/password_input.dart';
 
 import 'package:flutter_application_1/widgets/forms/inputs/text_input.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
@@ -22,12 +23,11 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-
+  bool _isSubmitting = false;
   late FToast _fToast;
 
   @override
   void initState() {
-    //TODO: implement initState
     super.initState();
 
     _fToast = FToast();
@@ -53,22 +53,42 @@ class _LoginFormState extends State<LoginForm> {
     // print(credentials);
 
     if (_formKey.currentState?.validate() == true) {
-      Auth auth = Provider.of<Auth>(context, listen: false);
-      await auth.login(credentials: credentials);
+      try {
+        setState(() {
+          _isSubmitting = true;
+        });
+        Auth auth = Provider.of<Auth>(context, listen: false);
+        await auth.login(credentials: credentials);
 
-      if (auth.user != null) {
+        // if (auth.user != null) {
+          Fluttertoast.showToast(
+            msg: 'logged successfully',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+          if (mounted) {
+            Navigator.popAndPushNamed(context, '/home');
+          }
+        // }
+      } catch (e) {
+        // Request failed due to an error
         Fluttertoast.showToast(
-          msg: 'logged successfully',
+          msg: '$e',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.green,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.redAccent,
           textColor: Colors.white,
           fontSize: 16.0,
         );
-        if (mounted) {
-          Navigator.popAndPushNamed(context, '/home');
-        }
+      } finally {
+        setState(() {
+          _isSubmitting = false;
+        });
       }
     }
   }
@@ -81,11 +101,13 @@ class _LoginFormState extends State<LoginForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           textField(
-              fieldController: _emailController,
-              fieldValidate: emailValidate,
-              icon: Icons.email,
-              label: "Email",
-              placeholder: "studentID@stud.fci-cu.edu.eg"),
+            fieldController: _emailController,
+            fieldValidate: emailValidate,
+            icon: Icons.email,
+            label: "Email",
+            placeholder: "studentID@stud.fci-cu.edu.eg",
+            enabled: !_isSubmitting,
+          ),
           const SizedBox(
             height: 10,
           ),
@@ -93,6 +115,7 @@ class _LoginFormState extends State<LoginForm> {
             controller: _passwordController,
             validator: passwordValidate,
             label: "Password",
+            enabled: !_isSubmitting,
           ),
           const SizedBox(
             height: 10,
@@ -100,14 +123,37 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(
             width: double.infinity,
             child: TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.amberAccent,
-                ),
-                onPressed: onSubmit,
-                child: const Text(
-                  "login",
-                  style: TextStyle(color:Colors.black,fontSize: 18),
-                )),
+              style: !_isSubmitting
+                  ? TextButton.styleFrom(
+                      backgroundColor: Colors.amberAccent,
+                    )
+                  : TextButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                    ),
+              onPressed: _isSubmitting ? null : onSubmit,
+              child: !_isSubmitting
+                  ? const Text(
+                      "login",
+                      style: TextStyle(color: Colors.black, fontSize: 18),
+                    )
+                  : const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "loading...",
+                          style: TextStyle(color: Colors.black54, fontSize: 18),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        SpinKitDoubleBounce(
+                          color: Colors.amberAccent,
+                          size: 30.0,
+                        ),
+                      ],
+                    ),
+            ),
           ),
         ],
       ),

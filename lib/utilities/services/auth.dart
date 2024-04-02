@@ -75,43 +75,43 @@ class Auth extends ChangeNotifier {
 
   Future<void> login({required Map<String, dynamic> credentials}) async {
     //login api call
-    try {
-      final responseData = await ApiConfig.post('/login', credentials);
-      tryToken(token: responseData["token"]);
+    // try {
+    final responseData = await ApiConfig.post('/login', credentials);
+    tryToken(token: responseData["token"]);
 
-      // print(_user);
-      if (_user != null) {
-        // save user in sqflite if not exists
+    // print(_user);
+    if (_user != null) {
+      // save user in sqflite if not exists
 
-        List<Map<dynamic, dynamic>> storedUser = await _sqlDatabase
-            .readData("SELECT * FROM 'users' WHERE id = '${_user!.id}'");
+      List<Map<dynamic, dynamic>> storedUser = await _sqlDatabase
+          .readData("SELECT * FROM 'users' WHERE id = '${_user!.id}'");
 
-        // print(storedUser);
+      // print(storedUser);
 
-        if (storedUser.isEmpty) {
-          await _sqlDatabase.insertData('''
+      if (storedUser.isEmpty) {
+        await _sqlDatabase.insertData('''
   INSERT INTO users(id, name, email, password, avatar, studentId, level, gender,role) VALUES('${_user!.id}', '${_user!.name}', '${_user!.email}', '${_user!.password}', '${_user!.avatar}', '${_user!.studentId}', '${_user!.level}', '${_user!.gender}', '${_user!.role}')
 ''');
-        }
       }
-      // print(authenticated);
-      // print(_user);
-      // print(_token);
-      notifyListeners();
-    } catch (e) {
-      // Request failed due to an error
-      Fluttertoast.showToast(
-        msg: '$e',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.redAccent,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-
-      // print(e);
     }
+    // print(authenticated);
+    // print(_user);
+    // print(_token);
+    notifyListeners();
+    // } catch (e) {
+    //   // Request failed due to an error
+    //   Fluttertoast.showToast(
+    //     msg: '$e',
+    //     toastLength: Toast.LENGTH_SHORT,
+    //     gravity: ToastGravity.BOTTOM,
+    //     timeInSecForIosWeb: 1,
+    //     backgroundColor: Colors.redAccent,
+    //     textColor: Colors.white,
+    //     fontSize: 16.0,
+    //   );
+    //
+    //   // print(e);
+    // }
   }
 
   Future<void> register({required Map<String, dynamic> userData}) async {
@@ -120,24 +120,11 @@ class Auth extends ChangeNotifier {
 
     if (_user != null) {
       // save user in sqflite
-      try {
-        await _sqlDatabase.insertData('''
+      // try {
+      await _sqlDatabase.insertData('''
   INSERT INTO users (id, name, email, password, studentId, level, gender,role) 
   VALUES('${_user!.id}', '${_user!.name}', '${_user!.email}', '${_user!.password}', '${_user!.studentId}', '${_user!.level}', '${_user!.gender}', '${_user!.role}')
 ''');
-      } catch (e) {
-        // Request failed due to an error
-        Fluttertoast.showToast(
-          msg: '$e',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.redAccent,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-        // print(e);
-      }
     }
     notifyListeners();
   }
@@ -151,7 +138,7 @@ class Auth extends ChangeNotifier {
     Map<String, dynamic> responseData =
         await ApiConfig.patch('/users/${_user?.id}', userData);
     _user = User.fromJson(responseData);
-    print(_user);
+    // print(_user);
     //  update to sqflite
 
     await _sqlDatabase.updateData('''

@@ -5,8 +5,9 @@ import 'package:image_picker/image_picker.dart';
 
 class ImageField extends StatefulWidget {
   final String? imageUrl;
+  final bool enabled;
 
-  const ImageField({super.key, this.imageUrl});
+  const ImageField({super.key, this.imageUrl, required this.enabled});
 
   @override
   State<ImageField> createState() => _ImageFieldState();
@@ -66,10 +67,12 @@ class _ImageFieldState extends State<ImageField> {
     return Center(
       child: InkWell(
         radius: 80,
-        onTap: () {
-          showModalBottomSheet(
-              context: context, builder: ((builder) => bottomSheet()));
-        },
+        onTap: widget.enabled
+            ? () {
+                showModalBottomSheet(
+                    context: context, builder: ((builder) => bottomSheet()));
+              }
+            : null,
         child: Stack(
           children: <Widget>[
             _imageFile != null

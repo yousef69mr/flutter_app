@@ -4,8 +4,13 @@ import 'package:flutter_application_1/widgets/forms/inputs/password_input.dart';
 
 class ConfirmPasswordForm extends StatefulWidget {
   final TextEditingController passwordController;
+  final bool enabled;
 
-  const ConfirmPasswordForm({super.key, required this.passwordController});
+  const ConfirmPasswordForm({
+    super.key,
+    required this.passwordController,
+    required this.enabled,
+  });
 
   @override
   State<ConfirmPasswordForm> createState() => _ConfirmPasswordFormState();
@@ -48,19 +53,21 @@ class _ConfirmPasswordFormState extends State<ConfirmPasswordForm> {
           controller: widget.passwordController,
           validator: passwordValidate,
           label: "Password",
+          enabled: widget.enabled,
         ),
         const SizedBox(height: 10),
         PasswordField(
           controller: _confirmPasswordController,
-          validator: (value){
-            String?message=passwordValidate(value);
-            if(message==null){
-              if(value != widget.passwordController.text){
+          validator: (value) {
+            String? message = passwordValidate(value);
+            if (message == null) {
+              if (value != widget.passwordController.text) {
                 return "Passwords do not match!";
               }
             }
             return message;
           },
+          enabled: widget.enabled,
           label: "Confirm password",
         ),
         const SizedBox(

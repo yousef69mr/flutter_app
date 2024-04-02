@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utilities/constants/options.dart';
 import 'package:flutter_application_1/utilities/validations/forms/inputs/email_input.dart';
 import 'package:flutter_application_1/utilities/validations/forms/inputs/name_input.dart';
-import 'package:flutter_application_1/utilities/validations/forms/inputs/password_input.dart';
-import 'package:flutter_application_1/widgets/forms/inputs/password_input.dart';
 import 'package:flutter_application_1/widgets/forms/inputs/text_input.dart';
 import 'package:flutter_application_1/widgets/forms/password_confirmation_form.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +34,7 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
   final TextEditingController _studentIdController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  bool _isSubmitting = false;
 
   User get activeUser => widget.user;
 
@@ -43,6 +43,7 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
     _genderController.text = activeUser.gender ?? "";
     _levelController.text = activeUser.level.toString();
     _studentIdController.text = activeUser.studentId;
+    _passwordController.text = activeUser.password;
     _profileImageController.text = activeUser.avatar ?? "";
     _emailController.text = activeUser.email;
     _nameController.text = activeUser.name;
@@ -76,6 +77,10 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
     // print(userData);
     try {
       if (_formKey.currentState?.validate() == true) {
+        setState(() {
+          _isSubmitting = true;
+        });
+
         Auth auth = Provider.of<Auth>(context, listen: false);
         await auth.updateUser(userData: userData);
 
@@ -105,7 +110,11 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      print(e);
+      // print(e);
+    } finally {
+      setState(() {
+        _isSubmitting = false;
+      });
     }
   }
 
@@ -118,40 +127,49 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
         children: <Widget>[
           ImageField(
             imageUrl: _profileImageController.text,
+            enabled: !_isSubmitting,
           ),
           const SizedBox(
             height: 30,
           ),
           textField(
-              fieldController: _nameController,
-              fieldValidate: nameValidate,
-              label: "Username",
-              placeholder: "john doe",
-              icon: Icons.person),
+            fieldController: _nameController,
+            fieldValidate: nameValidate,
+            label: "Username",
+            placeholder: "john doe",
+            icon: Icons.person,
+            enabled: !_isSubmitting,
+          ),
           const SizedBox(
             height: 10,
           ),
           textField(
-              fieldController: _emailController,
-              fieldValidate: (value) =>
-                  studentEmailValidate(value, _studentIdController.text),
-              label: "Email",
-              placeholder: "studentID@stud.fci-cu.edu.eg",
-              icon: Icons.email),
+            fieldController: _emailController,
+            fieldValidate: (value) =>
+                studentEmailValidate(value, _studentIdController.text),
+            label: "Email",
+            placeholder: "studentID@stud.fci-cu.edu.eg",
+            icon: Icons.email,
+            enabled: !_isSubmitting,
+          ),
           const SizedBox(
             height: 10,
           ),
           textField(
-              fieldController: _studentIdController,
-              fieldValidate: (value) => minLengthValidate(value, 5),
-              label: "Student Id",
-              placeholder: "20190666",
-              icon: Icons.assignment_ind),
+            fieldController: _studentIdController,
+            fieldValidate: (value) => minLengthValidate(value, 5),
+            label: "Student Id",
+            placeholder: "20190666",
+            icon: Icons.assignment_ind,
+            enabled: !_isSubmitting,
+          ),
           const SizedBox(
             height: 10,
           ),
-
-          ConfirmPasswordForm(passwordController: _passwordController),
+          ConfirmPasswordForm(
+            passwordController: _passwordController,
+            enabled: !_isSubmitting,
+          ),
           const SizedBox(
             height: 10,
           ),
@@ -161,10 +179,12 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
               Expanded(
                 flex: 2,
                 child: RadioField(
-                    label: "Gender",
-                    radioController: _genderController,
-                    radioOptions: genders,
-                    defaultValue: _genderController.text),
+                  label: "Gender",
+                  radioController: _genderController,
+                  radioOptions: genders,
+                  defaultValue: _genderController.text,
+                  enabled: !_isSubmitting,
+                ),
               ),
               Expanded(
                 flex: 1,
@@ -175,6 +195,7 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
                   selectOptions: levels,
                   defaultValue: int.parse(_levelController.text),
                   validator: requiredValidate,
+                  enabled: !_isSubmitting,
                 ),
               ),
             ],
@@ -185,15 +206,38 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
           SizedBox(
             width: double.infinity,
             child: TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.amberAccent,
-                ),
-                onPressed: onSubmit,
-                child: const Text(
-                  "save",
-                  style: TextStyle(color: Colors.black,fontSize: 18),
-                )),
-          )
+              style: !_isSubmitting
+                  ? TextButton.styleFrom(
+                      backgroundColor: Colors.amberAccent,
+                    )
+                  : TextButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                    ),
+              onPressed: _isSubmitting ? null : onSubmit,
+              child: !_isSubmitting
+                  ? const Text(
+                      "save changes",
+                      style: TextStyle(color: Colors.black, fontSize: 18),
+                    )
+                  : const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Saving...",
+                          style: TextStyle(color: Colors.black54, fontSize: 18),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        SpinKitDoubleBounce(
+                          color: Colors.amberAccent,
+                          size: 30.0,
+                        )
+                      ],
+                    ),
+            ),
+          ),
         ],
       ),
     );

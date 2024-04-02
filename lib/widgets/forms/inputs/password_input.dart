@@ -5,6 +5,7 @@ class PasswordField extends StatefulWidget {
   final String label;
   final String? Function(String?)? validator;
   final String? mode;
+  final bool enabled;
 
   const PasswordField({
     super.key,
@@ -12,6 +13,7 @@ class PasswordField extends StatefulWidget {
     required this.label,
     this.validator,
     this.mode,
+    required this.enabled,
   });
 
   @override
@@ -27,6 +29,7 @@ class _PasswordFieldState extends State<PasswordField> {
       controller: widget.controller,
       obscureText: _obscureText,
       validator: widget.validator,
+      enabled: widget.enabled,
       style: const TextStyle(color: Colors.amberAccent),
       decoration: InputDecoration(
         border: const OutlineInputBorder(

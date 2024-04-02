@@ -9,15 +9,18 @@ class SelectField<T> extends StatefulWidget {
   final String label;
   final String placeholder;
   final Function(String? d)? validator;
+  final bool enabled;
 
-  const SelectField(
-      {super.key,
-      this.validator,
-      required this.label,
-      required this.placeholder,
-      required this.selectController,
-      required this.selectOptions,
-      this.defaultValue});
+  const SelectField({
+    super.key,
+    this.validator,
+    required this.label,
+    required this.placeholder,
+    required this.selectController,
+    required this.selectOptions,
+    this.defaultValue,
+    required this.enabled,
+  });
 
   @override
   State<SelectField<T>> createState() => _SelectFieldState<T>();
@@ -94,13 +97,15 @@ class _SelectFieldState<T> extends State<SelectField<T>> {
                 child: option.key,
               );
             }).toList(),
-            onChanged: (T? newValue) {
-              setState(() {
-                message = widget.validator!(newValue.toString());
-                widget.selectController.text =
-                    _convertValueToString(newValue as T);
-              });
-            },
+            onChanged: widget.enabled
+                ? (T? newValue) {
+                    setState(() {
+                      message = widget.validator!(newValue.toString());
+                      widget.selectController.text =
+                          _convertValueToString(newValue as T);
+                    });
+                  }
+                : null,
           ),
           if (message != null)
             Text(

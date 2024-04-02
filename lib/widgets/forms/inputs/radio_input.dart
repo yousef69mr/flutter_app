@@ -7,13 +7,16 @@ class RadioField extends StatefulWidget {
   final List<RadioOption> radioOptions;
   final String? defaultValue;
   final String label;
+  final bool enabled;
 
-  const RadioField(
-      {super.key,
-      required this.label,
-      required this.radioController,
-      required this.radioOptions,
-      this.defaultValue});
+  const RadioField({
+    super.key,
+    required this.label,
+    required this.radioController,
+    required this.radioOptions,
+    this.defaultValue,
+    required this.enabled,
+  });
 
   @override
   State<RadioField> createState() => _RadioFieldState();
@@ -46,11 +49,13 @@ class _RadioFieldState extends State<RadioField> {
                 Radio<String>(
                   value: option.value,
                   groupValue: widget.radioController.text,
-                  onChanged: (value) {
-                    setState(() {
-                      widget.radioController.text = value!;
-                    });
-                  },
+                  onChanged: widget.enabled
+                      ? (value) {
+                          setState(() {
+                            widget.radioController.text = value!;
+                          });
+                        }
+                      : null,
                   activeColor: Colors.amberAccent,
                 ),
                 Text(
