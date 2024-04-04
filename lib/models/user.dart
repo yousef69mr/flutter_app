@@ -24,7 +24,7 @@ class User {
       : id = json["id"],
         name = json["name"],
         email = json["email"],
-        avatar = json["image"],
+        avatar = json["avatar"],
         password = json["password"],
         studentId = json["studentId"],
         gender = json["gender"],

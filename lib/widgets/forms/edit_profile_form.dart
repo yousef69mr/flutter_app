@@ -6,9 +6,11 @@ import 'package:flutter_application_1/widgets/forms/inputs/text_input.dart';
 import 'package:flutter_application_1/widgets/forms/password_confirmation_form.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_application_1/utilities/services/auth.dart';
+import '/utilities/services/api_config.dart';
 import '/models/user.dart';
 import '/utilities/validations/forms/inputs/index.dart';
 import 'inputs/image_input.dart';
@@ -26,17 +28,19 @@ class EditUserProfileForm extends StatefulWidget {
 
 class _EditUserProfileFormState extends State<EditUserProfileForm> {
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _profileImageController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _levelController = TextEditingController();
   final TextEditingController _studentIdController = TextEditingController();
+  XFile? _profileImage;
 
   final _formKey = GlobalKey<FormState>();
   bool _isSubmitting = false;
 
   User get activeUser => widget.user;
+
+  String? _avatar;
 
   @override
   void initState() {
@@ -44,9 +48,11 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
     _levelController.text = activeUser.level.toString();
     _studentIdController.text = activeUser.studentId;
     _passwordController.text = activeUser.password;
-    _profileImageController.text = activeUser.avatar ?? "";
     _emailController.text = activeUser.email;
     _nameController.text = activeUser.name;
+    _avatar = activeUser.avatar != null
+        ? '${ApiConfig.baseUrl}${activeUser.avatar}'
+        : null;
 
     super.initState();
   }
@@ -64,17 +70,21 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
   }
 
   Future<void> onSubmit() async {
-    Map<String, dynamic> userData = {
+    Map<String, String> userData = {
       "email": _emailController.text,
       "name": _nameController.text,
       "password": _passwordController.text,
       "studentId": _studentIdController.text,
-      "level": int.parse(_levelController.text),
+      "level": _levelController.text,
       "gender": _genderController.text,
       "device_name": "mobile",
     };
 
+    Map<String, List<XFile?>> userFiles = {
+      "avatar": [_profileImage]
+    };
     // print(userData);
+    // print(_profileImage);
     try {
       if (_formKey.currentState?.validate() == true) {
         setState(() {
@@ -82,7 +92,8 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
         });
 
         Auth auth = Provider.of<Auth>(context, listen: false);
-        await auth.updateUser(userData: userData);
+        // await auth.updateUserProfileImage(image: _profileImage as File);
+        await auth.updateUser(userData: userData, files: userFiles);
 
         if (auth.user != null) {
           Fluttertoast.showToast(
@@ -126,8 +137,13 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ImageField(
-            imageUrl: _profileImageController.text,
+            defaultValue: _avatar,
             enabled: !_isSubmitting,
+            onImageChanged: (XFile? newImage) {
+              setState(() {
+                _profileImage = newImage;
+              });
+            },
           ),
           const SizedBox(
             height: 30,

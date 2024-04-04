@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../utilities/formatter.dart';
+import '../utilities/services/api_config.dart';
 import '../utilities/services/auth.dart';
 
 // void main() {
@@ -48,18 +49,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             child: Text('No User Profile found'),
           );
         }
-        String? image = auth.user!.avatar;
+        String? avatar = auth.user!.avatar != null
+            ? '${ApiConfig.baseUrl}${auth.user!.avatar}'
+            : null;
+
+        // print(avatar);
         String? gender = auth.user!.gender;
-        // print(typeof image);
         return Padding(
           padding: const EdgeInsets.fromLTRB(30, 40, 30, 0),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Center(
-                  child: image != null && image.isEmpty
+                  child: avatar != null && avatar.isNotEmpty
                       ? CircleAvatar(
-                          backgroundImage: NetworkImage(image.toString()),
+                          backgroundImage: NetworkImage(avatar.toString()),
                           radius: 50,
                         )
                       : const CircleAvatar(

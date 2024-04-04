@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
+import '../utilities/services/api_config.dart';
 import '/utilities/services/auth.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -61,7 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               }
 
-              String? profileImage = auth.user!.avatar;
+              String? profileImage = auth.user!.avatar != null
+                  ? '${ApiConfig.baseUrl}${auth.user!.avatar}'
+                  : null;
+
               return ListView(
                 children: <Widget>[
                   GestureDetector(
@@ -79,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 profileImage != null &&
-                                    profileImage.isEmpty
+                                    profileImage.isNotEmpty
                                     ? CircleAvatar(
                                         backgroundImage: NetworkImage(
                                             profileImage.toString()),
