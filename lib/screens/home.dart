@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-import '../utilities/services/api_config.dart';
+import '/utilities/formatter.dart';
+import '/utilities/services/api_config.dart';
 import '/utilities/services/auth.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -82,18 +83,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                profileImage != null &&
-                                    profileImage.isNotEmpty
+                                profileImage != null && profileImage.isNotEmpty
                                     ? CircleAvatar(
                                         backgroundImage: NetworkImage(
                                             profileImage.toString()),
                                         radius: 40,
                                       )
-                                    : const CircleAvatar(
-                                        backgroundImage: AssetImage(
-                                            "assets/images/profile-default.jpg"),
-                                        radius: 40,
-                                      ),
+                                    : genderImageWidget(auth.user?.gender,
+                                        radius: 40),
                               ],
                             ),
                           ),

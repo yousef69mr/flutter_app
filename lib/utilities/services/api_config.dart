@@ -167,6 +167,8 @@ class ApiConfig {
         for (var fieldName in files.keys) {
           var fileList = files[fieldName];
           if (fileList != null) {
+
+            print(fileList);
             for (var file in fileList) {
               if (file != null) {
                 String filename = basename(file.path);
@@ -187,8 +189,6 @@ class ApiConfig {
 
                 // Convert XFile to http.MultipartFile
                 request.files.add(multipartFile);
-              } else {
-                throw ArgumentError('File should be of type XFile');
               }
             }
           }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../utilities/formatter.dart';
-import '../utilities/services/api_config.dart';
-import '../utilities/services/auth.dart';
+import '/utilities/formatter.dart';
+import '/utilities/services/api_config.dart';
+import '/utilities/services/auth.dart';
 
 // void main() {
 //   runApp(const MaterialApp(
@@ -54,7 +54,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             : null;
 
         // print(avatar);
-        String? gender = auth.user!.gender;
+        String? gender = auth.user?.gender;
         return Padding(
           padding: const EdgeInsets.fromLTRB(30, 40, 30, 0),
           child: Column(
@@ -66,11 +66,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           backgroundImage: NetworkImage(avatar.toString()),
                           radius: 50,
                         )
-                      : const CircleAvatar(
-                          backgroundImage:
-                              AssetImage("assets/images/profile-default.jpg"),
-                          radius: 50,
-                        ),
+                      : genderImageWidget(gender,radius: 50),
                 ),
                 const SizedBox(
                   height: 10,

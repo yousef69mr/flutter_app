@@ -62,16 +62,21 @@ class _SelectFieldState<T> extends State<SelectField<T>> {
   Widget build(BuildContext context) {
     String? message;
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            widget.label,
-            style: const TextStyle(
-              color: Colors.grey,
-            ),
-            textAlign: TextAlign.left,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          widget.label,
+          style: const TextStyle(
+            color: Colors.grey,
           ),
-          DropdownButton<T>(
+          textAlign: TextAlign.left,
+        ),
+        Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: Colors
+                .grey[900], // Change this to your desired background color
+          ),
+          child: DropdownButton<T>(
             isExpanded: true,
             value: widget.selectController.text.isNotEmpty
                 ? _convertStringToValue(widget.selectController.text)
@@ -82,10 +87,7 @@ class _SelectFieldState<T> extends State<SelectField<T>> {
             ),
             icon: const Icon(Icons.arrow_drop_down),
             // iconSize: 24,
-            style: TextStyle(
-                color: widget.selectController.text.isEmpty
-                    ? Colors.black
-                    : Colors.amberAccent),
+            style: const TextStyle(color: Colors.amberAccent),
             underline: Container(
               height: 2,
               color: Colors.amberAccent,
@@ -94,7 +96,15 @@ class _SelectFieldState<T> extends State<SelectField<T>> {
                 .map<DropdownMenuItem<T>>((SelectOption option) {
               return DropdownMenuItem<T>(
                 value: option.value,
-                child: option.key,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors
+                        .grey[900], // Set your desired background color here
+                  ),
+                  child: Row(
+                    children: <Widget>[option.key],
+                  ),
+                ),
               );
             }).toList(),
             onChanged: widget.enabled
@@ -107,14 +117,16 @@ class _SelectFieldState<T> extends State<SelectField<T>> {
                   }
                 : null,
           ),
-          if (message != null)
-            Text(
-              widget.label,
-              style: const TextStyle(
-                color: Colors.grey,
-              ),
-              textAlign: TextAlign.left,
+        ),
+        if (message != null)
+          Text(
+            widget.label,
+            style: const TextStyle(
+              color: Colors.grey,
             ),
-        ]);
+            textAlign: TextAlign.left,
+          ),
+      ],
+    );
   }
 }

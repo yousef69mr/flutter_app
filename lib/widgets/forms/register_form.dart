@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_application_1/utilities/services/auth.dart';
-import '../../utilities/validations/forms/inputs/index.dart';
+import '/utilities/validations/forms/inputs/index.dart';
 import 'inputs/radio_input.dart';
 import 'inputs/select_input.dart';
 
@@ -168,7 +168,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     placeholder: 'select level',
                     selectController: _levelController,
                     selectOptions: levels,
-                    defaultValue: levels[0].value,
+                    // defaultValue: levels[0].value,
                     validator: requiredValidate,
                     enabled: !_isSubmitting),
               ),

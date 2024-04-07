@@ -3,6 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
+import '../../../utilities/formatter.dart';
+import '../../../utilities/services/auth.dart';
 
 class ImageField extends StatefulWidget {
   final String? defaultValue;
@@ -55,7 +59,7 @@ class _ImageFieldState extends State<ImageField> {
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
-        children: [
+        children: <Widget>[
           const Text(
             'choose image',
             style: TextStyle(fontSize: 20),
@@ -106,35 +110,33 @@ class _ImageFieldState extends State<ImageField> {
                     context: context, builder: ((builder) => bottomSheet()));
               }
             : null,
-        child: Stack(
-          children: <Widget>[
-            widget.defaultValue != null && _imageFile == null
-                ? CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(widget.defaultValue.toString()),
-                    radius: 80,
-                  )
-                : _imageFile != null
-                    ? CircleAvatar(
-                        backgroundImage: FileImage(File(_imageFile!.path)),
-                        radius: 80,
-                      )
-                    : const CircleAvatar(
-                        backgroundImage: AssetImage(
-                          "assets/images/profile-default.jpg",
-                        ),
-                        radius: 80,
-                      ),
-            const Positioned(
+        child: Consumer<Auth>(builder: (context, auth, child) {
+          return Stack(
+            children: <Widget>[
+              widget.defaultValue != null && _imageFile == null
+                  ? CircleAvatar(
+                      backgroundImage:
+                          NetworkImage(widget.defaultValue.toString()),
+                      radius: 80,
+                    )
+                  : _imageFile != null
+                      ? CircleAvatar(
+                          backgroundImage: FileImage(File(_imageFile!.path)),
+                          radius: 80,
+                        )
+                      : genderImageWidget(auth.user?.gender, radius: 80),
+              const Positioned(
                 bottom: 20,
                 right: 16,
                 child: Icon(
                   Icons.camera_alt,
                   size: 30,
                   color: Colors.amberAccent,
-                ))
-          ],
-        ),
+                ),
+              )
+            ],
+          );
+        }),
       ),
     );
   }

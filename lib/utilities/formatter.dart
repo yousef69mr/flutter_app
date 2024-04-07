@@ -50,5 +50,31 @@ Widget genderWidget(String? gender) {
   ]);
 }
 
-
-
+Widget genderImageWidget(String? gender, {double? radius}) {
+  switch (gender) {
+    case "m":
+      {
+        return  CircleAvatar(
+          backgroundImage: const AssetImage(
+            "assets/images/profile-default-male.jpg",
+          ),
+          radius: radius,
+        );
+      }
+    case "f":
+      {
+        return  CircleAvatar(
+          backgroundImage: const AssetImage(
+            "assets/images/profile-default-female.jpg",
+          ),
+          radius: radius,
+        );
+      }
+  }
+  return  CircleAvatar(
+    backgroundImage: const AssetImage(
+      "assets/images/profile-default-female.jpg",
+    ),
+    radius: radius,
+  );
+}

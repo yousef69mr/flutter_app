@@ -6,7 +6,7 @@ import "package:jwt_decoder/jwt_decoder.dart";
 import "package:flutter_application_1/utilities/sql_database.dart";
 import "package:flutter_application_1/utilities/secure_storage.dart";
 import "api_config.dart";
-import 'dart:io';
+// import 'dart:io';
 
 class Auth extends ChangeNotifier {
   bool _isLoggedIn = false;
@@ -86,33 +86,33 @@ class Auth extends ChangeNotifier {
   Future<void> login({required Map<String, dynamic> credentials}) async {
     //login api call
     final responseData = await ApiConfig.post('/login', credentials);
-    tryToken(token: responseData["token"]);
+    await tryToken(token: responseData["token"]);
 
     // print(_user);
-    // if (_user != null) {
-    // save user in sqflite if not exists
+    if (_user != null) {
+      // save user in sqflite if not exists
 
-    List<Map<dynamic, dynamic>> storedUser = await _sqlDatabase
-        .readData("SELECT * FROM 'users' WHERE id = '${_user!.id}'");
+      List<Map<dynamic, dynamic>> storedUser = await _sqlDatabase
+          .readData("SELECT * FROM 'users' WHERE id = '${_user!.id}'");
 
-    // print(storedUser);
+      // print(storedUser);
 
-    if (storedUser.isEmpty) {
-      // insert new User
-      await _sqlDatabase.insertData('''
+      if (storedUser.isEmpty) {
+        // insert new User
+        await _sqlDatabase.insertData('''
   INSERT INTO users(id, name, email, password, avatar, studentId, level, gender,role) VALUES('${_user!.id}', '${_user!.name}', '${_user!.email}', '${_user!.password}', ${_user!.avatar}, '${_user!.studentId}', '${_user!.level}', '${_user!.gender}', '${_user!.role}')
 ''');
-    } else {
-      //update existing User
-      await _sqlDatabase.updateData('''
+      } else {
+        //update existing User
+        await _sqlDatabase.updateData('''
   UPDATE 'users' 
-  SET name='${_user!.name}', email='${_user!.email}', password='${_user!.password}', studentId='${_user!.studentId}', level='${_user!.level}'${_user!.avatar != null ? ", gender='${_user!.gender}'" : ""}, role='${_user!.role}'${_user!.avatar != null ? ", avatar='${_user!.avatar}'" : ""}
+  SET name='${_user!.name}', email='${_user!.email}', password='${_user!.password}', studentId='${_user!.studentId}', level='${_user!.level}'${_user!.avatar != null ? ", gender='${_user!.gender}'" : ""}, role='${_user!.role}'
             WHERE id='${_user!.id}';
             ''');
-    }
+      }
 
 // print(_token);
-//     }
+    }
 
     // print(authenticated);
     // print(_user);
@@ -122,7 +122,7 @@ class Auth extends ChangeNotifier {
 
   Future<void> register({required Map<String, dynamic> userData}) async {
     final responseData = await ApiConfig.post('/register', userData);
-    tryToken(token: responseData["token"]);
+    await tryToken(token: responseData["token"]);
 
     if (_user != null) {
       // save user in sqflite
@@ -176,38 +176,7 @@ class Auth extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateUserProfileImage({required File image}) async {
-    if (_token == null) {
-      throw "no token provided";
-    }
-
-    ApiConfig.setToken(_token!);
-    Map<String, dynamic> responseData = await ApiConfig.uploadFile(
-        '/users/${_user?.id}',
-        filename: 'dd',
-        mediaType: 'image',
-        method: "PATCH");
-    _user = User.fromJson(responseData);
-    // print(_user);
-    //  update to sqflite
-
-    await _sqlDatabase.updateData('''
-        UPDATE users
-        SET name = '${_user!.name}',
-            email = '${_user!.email}',
-            password = '${_user!.password}',
-            studentId = '${_user!.studentId}',
-            level = '${_user!.level}',
-            gender = '${_user!.gender}',
-            role = '${_user!.role}'
-        WHERE id = '${_user!.id}';
-        ''');
-    //tryToken(token: responseData["token"]);
-
-    notifyListeners();
-  }
-
-  void tryToken({String? token}) async {
+  Future<void> tryToken({String? token}) async {
     if (token == null) {
       throw "no token provided";
     }

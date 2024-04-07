@@ -30,11 +30,12 @@ class SqlDatabase {
       "email" TEXT NOT NULL,
       "level" INTEGER NOT NULL,
       "gender" TEXT NULL,
+      "avatar" TEXT NULL,
       "password" TEXT NOT NULL,
       "studentId" TEXT NOT NULL
     )''');
 
-    print("onCreate ====================");
+    // print("onCreate ====================");
   }
 
   _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -55,7 +56,7 @@ class SqlDatabase {
 
     // await db.execute('ALTER TABLE "users" ADD COLUMN "avatar" TEXT NULL');
 
-    print("onUpgrade ====================");
+    // print("onUpgrade ====================");
   }
 
   Future<List<Map<String, dynamic>>> readData(String sql) async {

@@ -81,7 +81,7 @@ class _EditUserProfileFormState extends State<EditUserProfileForm> {
     };
 
     Map<String, List<XFile?>> userFiles = {
-      "avatar": [_profileImage]
+      "avatar": [_profileImage],
     };
     // print(userData);
     // print(_profileImage);
