@@ -58,7 +58,6 @@ class Auth extends ChangeNotifier {
     }
 
     // print(_user);
-
     // notifyListeners();
   }
 
@@ -110,6 +109,8 @@ class Auth extends ChangeNotifier {
             WHERE id='${_user!.id}';
             ''');
       }
+
+
 
 // print(_token);
     }

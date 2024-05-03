@@ -46,6 +46,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: <Widget>[
                     ListTile(
                       onTap: () {
+                        Navigator.of(context).pushNamed("/stores");
+                      },
+                      leading: const Icon(
+                        Icons.store,
+                        color: Colors.amberAccent,
+                      ),
+                      title: const Text(
+                        "stores",
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () {
                         Navigator.of(context).pushNamed("/login");
                       },
                       leading: const Icon(
@@ -74,10 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.pushNamed(context, "/user_profile");
                     },
                     child: DrawerHeader(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
                           Expanded(
                             flex: 1,
                             child: Column(
@@ -125,16 +140,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                       const SizedBox(
                                         width: 5,
                                       ),
-                                      Text("${auth.user!.level}",
-                                          style: const TextStyle(
-                                              color: Colors.grey)),
+                                      Text(
+                                        "${auth.user!.level}",
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                        ])),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).pushNamed("/stores");
+                    },
+                    leading: const Icon(
+                      Icons.store,
+                      color: Colors.amberAccent,
+                    ),
+                    title: const Text(
+                      "stores",
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
                   ListTile(
                     onTap: () {
