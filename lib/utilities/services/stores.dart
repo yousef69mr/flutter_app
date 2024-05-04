@@ -134,9 +134,11 @@ class StoreProvider extends ChangeNotifier {
       stores = convertApiStoresToList(storesQuery);
       favoriteStores = convertApiStoresToList(favoriteStoresQuery);
 
-
-      // Position userLocation = await getCurrentLocation();
-      // stores.sort((a, b) => a.calculateDistance(userLocation.latitude, userLocation.longitude).compareTo(b.calculateDistance(userLocation.latitude, userLocation.longitude)));
+      Position? userLocation = await getCurrentLocation();
+      stores.sort((a, b) => a
+          .calculateDistance(userLocation.latitude, userLocation.longitude)
+          .compareTo(b.calculateDistance(
+              userLocation.latitude, userLocation.longitude)));
       return stores;
     } catch (e) {
       // print(e);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utilities/helpers/location.dart';
 import 'package:flutter_application_1/utilities/services/auth.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/store.dart';
@@ -64,7 +65,6 @@ class _StoresScreenState extends State<StoresScreen> {
                     ),
                   );
                 }
-
 
                 return ListView.builder(
                   itemCount: stores.length,
