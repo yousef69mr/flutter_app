@@ -148,6 +148,50 @@ class StoreProvider extends ChangeNotifier {
     }
   }
 
+
+  Future<List<Store>> getFavoriteStoresFromDatabase() async {
+    try {
+      ApiConfig.setToken(auth.authToken!);
+      await fetchFavoriteStoresFromApi();
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '$e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.redAccent,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+
+    try {
+
+      // print(favoriteStores);
+      final List<Map<String, dynamic>> favoriteStoresQuery =
+      await _sqlDatabase.readData('''
+    SELECT s.* FROM "stores" AS s
+    LEFT JOIN "favorite_stores" 
+    ON s.id = favorite_stores.storeId 
+    WHERE favorite_stores.userId='${auth.user!.id}'
+    ''');
+      // print(favoriteStoresQuery);
+      favoriteStores = convertApiStoresToList(favoriteStoresQuery);
+
+      Position? userLocation = await getCurrentLocation();
+      favoriteStores.sort((a, b) => a
+          .calculateDistance(userLocation.latitude, userLocation.longitude)
+          .compareTo(b.calculateDistance(
+          userLocation.latitude, userLocation.longitude)));
+      return favoriteStores;
+    } catch (e) {
+      // print(e);
+      return [];
+    } finally {
+      notifyListeners();
+    }
+  }
+
   Future<void> addToFavorites(Map<String, String> data) async {
     // print(data);
     try {

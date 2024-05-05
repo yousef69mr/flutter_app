@@ -6,14 +6,14 @@ import '../../models/store.dart';
 import '../../utilities/services/stores.dart';
 import '../../widgets/cards/store-card.dart';
 
-class StoresScreen extends StatefulWidget {
-  const StoresScreen({super.key});
+class FavoriteStoresScreen extends StatefulWidget {
+  const FavoriteStoresScreen({super.key});
 
   @override
-  State<StoresScreen> createState() => _StoresScreenState();
+  State<FavoriteStoresScreen> createState() => _FavoriteStoresScreenState();
 }
 
-class _StoresScreenState extends State<StoresScreen> {
+class _FavoriteStoresScreenState extends State<FavoriteStoresScreen> {
   // This widget is the root of your application.
 
   @override
@@ -46,10 +46,13 @@ class _StoresScreenState extends State<StoresScreen> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(30, 40, 30, 0),
           child: FutureBuilder<List<Store>>(
-            future: storeProvider.getStoresFromDatabase(),
+            future: storeProvider.getFavoriteStoresFromDatabase(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.amberAccent,
+                ));
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else {
@@ -58,7 +61,7 @@ class _StoresScreenState extends State<StoresScreen> {
                 if (stores.isEmpty) {
                   return const Center(
                     child: Text(
-                      'No Stores found !',
+                      'No Favorite stores found !',
                       style: TextStyle(color: Colors.grey),
                     ),
                   );
