@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/utilities/helpers/location.dart';
-import 'package:flutter_application_1/utilities/services/auth.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/store.dart';
-import '../../utilities/services/stores.dart';
-import '../../widgets/cards/store-card.dart';
+import '/models/store.dart';
+import '/utilities/services/stores.dart';
+import '/widgets/cards/store-card.dart';
 
 class StoresScreen extends StatefulWidget {
   const StoresScreen({super.key});
@@ -21,7 +18,6 @@ class _StoresScreenState extends State<StoresScreen> {
   @override
   Widget build(BuildContext context) {
     final storeProvider = Provider.of<StoreProvider>(context, listen: false);
-    final auth = Provider.of<Auth>(context, listen: false);
 
     return SizedBox(
       width: double.infinity,
@@ -62,8 +58,9 @@ class _StoresScreenState extends State<StoresScreen> {
                       Text(
                         "Favorite stores",
                         style: TextStyle(
-                            color: Colors.amberAccent,
-                            fontWeight: FontWeight.bold),
+                          color: Colors.amberAccent,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       SizedBox(
                         width: 5,
