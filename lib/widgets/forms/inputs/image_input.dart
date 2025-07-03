@@ -73,6 +73,7 @@ class _ImageFieldState extends State<ImageField> {
               TextButton.icon(
                 onPressed: () {
                   takePhoto(ImageSource.gallery);
+                  Navigator.pop(context);
                 },
                 label: const Text('gallery'),
                 icon: const Icon(Icons.image),
@@ -80,6 +81,7 @@ class _ImageFieldState extends State<ImageField> {
               TextButton.icon(
                 onPressed: () {
                   takePhoto(ImageSource.camera);
+                  Navigator.pop(context);
                 },
                 label: const Text('camera'),
                 icon: const Icon(Icons.camera),

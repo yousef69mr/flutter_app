@@ -48,29 +48,64 @@ class _StoresScreenState extends State<StoresScreen> {
             padding: const EdgeInsets.fromLTRB(30, 40, 30, 0),
             child: ListView(
               children: <Widget>[
-                OutlinedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/favorite_stores');
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Favorite stores",
-                        style: TextStyle(
-                          color: Colors.amberAccent,
-                          fontWeight: FontWeight.bold,
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/favorite_stores');
+                        },
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "Favorite stores",
+                              style: TextStyle(
+                                color: Colors.amberAccent,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              Icons.favorite,
+                              color: Colors.amberAccent,
+                            )
+                          ],
                         ),
                       ),
-                      SizedBox(
-                        width: 5,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/stores_map');
+                        },
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "Map view",
+                              style: TextStyle(
+                                color: Colors.amberAccent,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              Icons.map,
+                              color: Colors.amberAccent,
+                            )
+                          ],
+                        ),
                       ),
-                      Icon(
-                        Icons.favorite,
-                        color: Colors.amberAccent,
-                      )
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 5,

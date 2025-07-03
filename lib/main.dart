@@ -4,6 +4,7 @@ import 'package:flutter_application_1/screens/auth/login.dart';
 import 'package:flutter_application_1/screens/auth/register.dart';
 import 'package:flutter_application_1/screens/home.dart';
 import 'package:flutter_application_1/screens/loading/initial_start.dart';
+import 'package:flutter_application_1/screens/maps/store_map.dart';
 import 'package:flutter_application_1/screens/stores/all_stores.dart';
 import 'package:flutter_application_1/screens/stores/favorite_stores.dart';
 import 'package:flutter_application_1/screens/user_profile.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         "/register": (context) => const RegisterScreen(),
         "/home": (context) => const HomeScreen(),
         "/stores": (context) => const StoresScreen(),
+        "/stores_map": (context) => const StoresMapScreen(stores: [],),
         "/favorite_stores": (context) => const FavoriteStoresScreen(),
         "/user_profile": (context) => const UserProfileScreen(),
         "/edit_user_profile": (context) => const EditUserProfileScreen(),

@@ -1,5 +1,14 @@
 import 'package:geolocator/geolocator.dart';
 
+// Future<void> openNavigationApp(Position userLocation, Position destination) async {
+//   final url = 'google.navigation:q=${destination.latitude},${destination.longitude}';
+//   if (await canLaunchUrl(url)) {
+//     await launchUrl(url);
+//   } else {
+//     throw 'Could not launch navigation app';
+//   }
+// }
+
 /// Determine the current position of the device.
 ///
 /// When the location services are not enabled or permissions
@@ -40,3 +49,6 @@ Future<Position> getCurrentLocation() async {
   // continue accessing the position of the device.
   return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 }
+
+
+

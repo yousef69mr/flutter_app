@@ -106,7 +106,17 @@ class _StoreCardState extends State<StoreCard> {
             Text(
               widget.store.latitude.toString(),
               style: const TextStyle(color: Colors.grey),
-            )
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.location_searching_rounded,
+                color: Colors.amberAccent,
+              ),
+              onPressed: () async {},
+            ),
           ],
         ),
         trailing: IconButton(
